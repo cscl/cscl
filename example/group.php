@@ -10,22 +10,6 @@
 
 	<h2>CSCL_統計學習網</h2>
 
-<div id="MAIN_NAV" >
-
-	<ul>
-		<li><a href="reading.php">開始閱讀</a></li> 
-		<li><a href="upload.php">檔案上傳</a></li>
-		<li><a href="message.php">留言板</a></li>
-		<li><a href="record.php">歷史紀錄</a></li>
-		<li><a href="login.php">會員資料修改</a></li>
-		<li><b>管理團隊</b></li>
-		<li><a href="manager_login.php">管理者專區</a></li>
-		<li><a href="index.php" style="color:#FF99FF">回首頁</a></li>
-	</ul>
-</div>
-<div id="CONTENT" >   
-	<p>
-		<center>
 		<h2>小組自行設計區<br/></h2>
 		<table>
 		<tr>
@@ -44,3 +28,20 @@
 </div>
 </body>
 </html>
+
+<div id="MAIN_NAV" >
+
+	<ul>
+		<li><a href="reading.php">開始閱讀</a></li> 
+		<li><a href="upload.php">檔案上傳</a></li>
+		<li><a href="message.php">留言板</a></li>
+		<li><a href="record.php">歷史紀錄</a></li>
+		<li><a href="login.php">會員資料修改</a></li>
+		<li><b>管理團隊</b></li>
+		<li><a href="manager_login.php">管理者專區</a></li>
+		<li><a href="index.php" style="color:#FF99FF">回首頁</a></li>
+	</ul>
+</div>
+<div id="CONTENT" >   
+	<p>
+		<center>
