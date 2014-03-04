@@ -14,7 +14,7 @@
 
 	<ul>
 		<li><a href="reading.php">閱讀</a></li>  
-		<li><a href="upload.php">檔案上傳</a></li>
+		<li><a href="upload.php">上傳</a></li>
 		<li><a href="message.php">留言板</a></li>
 		<li><a href="record.php">歷史紀錄</a></li>
 		<li><a href="login.php">會員資料修改</a></li>
