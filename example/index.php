@@ -8,12 +8,12 @@
 <body>
 
 
-	<h2>電腦科學學習網</h2>
+	<h2>電腦科學學習網computer science</h2>
 
 <div id="MAIN_NAV" >
 
 	<ul>
-		<li><a href="reading.php">開始閱讀</a></li>  
+		<li><a href="reading.php">閱讀</a></li>  
 		<li><a href="upload.php">檔案上傳</a></li>
 		<li><a href="message.php">留言板</a></li>
 		<li><a href="record.php">歷史紀錄</a></li>
