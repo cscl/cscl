@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Phil's Assignment</title>
+</head>
+
+<body>
+<div id="HEADER">
+    <h2>Homework</h2>
+</div>
+<div id="MAIN_NAV">
+    <ul>
+        <li><a href="input.php">資料輸入</a></li>
+        <li><a href="count.php">成績計算</a></li>
+        <li><a href="analyze.php">性別分析</a></li>
+        <li><a href="read_cluster.php">閱讀次數分析</a></li>
+        <li><a href="index.php" style="color:#FF99FF">回首頁</a></li>
+    </ul>
+</div>
+<div id="CONTENT">
+    <p>
+        <center>
+        <h2>閱讀次數分析結果<br/></h2>
+        </center>
+        <br/>
+        <br/>
+        <center>
+<?php
+ 
+/**
+* This code was created by Jose Fonseca (josefonseca@blip.pt) 
+*
+* Please feel free to use it in either commercial or non-comercial applications,
+* and if you enjoy using it feel free to let us know or to comment on our
+* technical blog at http://code.blip.pt
+*/
+ 
+include("mysql_connect.php");
+
+
+$sql = "SELECT account,read_number FROM student_learn_record ";
+$result = mysql_query($sql);
+$row = mysql_fetch_row($result);
+$data_name = array();
+$data = array();
+$data_cluster = array();
+
+$k = 0;
+while($row = mysql_fetch_array($result)){
+                    $data[$k] = $row['read_number'];
+                    $data_name[$k] = $row['account'];
+                    echo $data_name[$k]."-".$data[$k]."</br>";
+                    $k = $k + 1;
+                }
+
+//print_r($row);
+
+print_r(kmeans($data, 3));
+$data_cluster = kmeans($data, 3);
+//$m = 0;
+//while($data_cluster = kmeans($data, 3)){
+                    //$data_cluster[$m] = $row['read_number'];
+                    //$data_name[$k] = $row['account'];
+                    //echo $data_cluster[$k]."-".$data[$k]."</br>";
+                  //  echo $data_cluster[$m]."</br>";
+                   // $m = $m + 1;
+               // }
+ 
+ 
+/**
+* This function takes a array of integers and the number of clusters to create.
+* It returns a multidimensional array containing the original data organized
+* in clusters.
+*
+* @param array $data
+* @param int $k
+*
+* @return array
+*/
+function kmeans($data, $k)
+{
+        $cPositions = assign_initial_positions($data, $k);
+        $clusters = array();
+ 
+        while(true)
+        {
+                $changes = kmeans_clustering($data, $cPositions, $clusters);
+                if(!$changes)
+                {
+                        return kmeans_get_cluster_values($clusters, $data);
+                }
+                $cPositions = kmeans_recalculate_cpositions($cPositions, $data, $clusters);
+        }
+}
+ 
+/**
+*
+*/
+function kmeans_clustering($data, $cPositions, &$clusters)
+{
+        $nChanges = 0;
+        foreach($data as $dataKey => $value)
+        {
+                $minDistance = null;
+                $cluster = null;
+                foreach($cPositions as $k => $position)
+                {
+                        $distance = distance($value, $position);
+                        if(is_null($minDistance) || $minDistance > $distance)
+                        {
+                                $minDistance = $distance;
+                                $cluster = $k;
+                        }
+                }
+                if(!isset($clusters[$dataKey]) || $clusters[$dataKey] != $cluster)
+                {
+                        $nChanges++;
+                }
+                $clusters[$dataKey] = $cluster;
+        }
+ 
+        return $nChanges;
+}
+ 
+ 
+ 
+ 
+function kmeans_recalculate_cpositions($cPositions, $data, $clusters)
+{
+        $kValues = kmeans_get_cluster_values($clusters, $data);
+        foreach($cPositions as $k => $position)
+        {
+                $cPositions[$k] = empty($kValues[$k]) ? 0 : kmeans_avg($kValues[$k]);
+        }
+        return $cPositions;
+}
+ 
+function kmeans_get_cluster_values($clusters, $data)
+{
+        $values = array();
+        foreach($clusters as $dataKey => $cluster)
+        {
+                $values[$cluster][] = $data[$dataKey];
+        }
+        return $values;
+}
+ 
+ 
+function kmeans_avg($values)
+{
+        $n = count($values);
+        $sum = array_sum($values);
+        return ($n == 0) ? 0 : $sum / $n;
+}
+ 
+/**
+* Calculates the distance (or similarity) between two values. The closer
+* the return value is to ZERO, the more similar the two values are.
+*
+* @param int $v1
+* @param int $v2
+*
+* @return int
+*/
+function distance($v1, $v2)
+{
+  return abs($v1-$v2);
+}
+ 
+/**
+* Creates the initial positions for the given
+* number of clusters and data.
+* @param array $data
+* @param int $k
+*
+* @return array
+*/
+function assign_initial_positions($data, $k)
+{
+        $min = min($data);
+        $max = max($data);
+        $int = ceil(abs($max - $min) / $k);
+        while($k-- > 0)
+        {
+                $cPositions[$k] = $min + $int * $k;
+        }
+        return $cPositions;
+}
+
+
+                echo "<table width=800 border=1>";
+                echo "<tr align=center><td>姓名</td><td>閱讀次數</td><td>分類</td></tr>";     
+                
+                $i = 0;    
+                foreach($data_cluster as $value1)
+                  {
+                    foreach($value1 as $value2)
+                    {
+                        $sql1 = "SELECT account FROM student_learn_record where read_number = ".$value2;
+                        //echo $sql1;
+                        $result1 = mysql_query($sql1);
+                        $row1 = mysql_fetch_row($result1);
+                        //$data_name1 = array();
+                        $j = 0;
+                        while($row1 = mysql_fetch_array($result1)){
+                             //$data[$k] = $row['read_number'];
+                               //$data_name1[$j] = $row1['account'];
+                               //echo $row1[$j]."</br>";
+                               $j = $j + 1;
+                            }
+                        echo "<tr align=center><td>"."</td>";
+                        echo "<td>".$value2."</td>";
+                        if ($i == 0)
+                            {
+                             echo "<td>"."少"."</td>";
+                            }
+                        if ($i == 1)
+                            {
+                             echo "<td>"."多"."</td>";
+                            }
+                        if ($i == 2)
+                            {
+                             echo "<td>"."中"."</td>";
+                            }
+                        
+                    }
+                  
+                   echo "</tr>";  
+                   $i = $i + 1;   
+                  }
+
+                echo "</table>";
+                
+            
+        ?>
+        </center>
+        <br/>
+        <br/>
+    </p>
+</div>
+<div id="FOOTER">   
+    <p>
+        <br/><br/><br/>
+        <h3><center><br/>Author by Che-cheng Lin</center></h3>
+    </p>
+</div>
+</body>
+</html>
