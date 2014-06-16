@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php
+include("mysql_connect.php");
+//$id = $_POST['id'];
+//$pw = $_POST['pw'];
+
+//$sql = "SELECT * FROM admin where account='$id' and password='$pw'";
+//$row = mysql_fetch_row(mysql_query($sql));
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Phil's Assignment</title>
+</head>
+
+<body>
+<div id="HEADER">
+	<h2>教師專區</h2>
+</div>
+<div id="MAIN_NAV">
+	<ul>
+		<li><a href="index.php" style="color:#FF99FF">回首頁</a></li>
+	</ul>
+</div>
+<div id="CONTENT">
+	<p>
+		<h2>行為模式分析<br/></h2>
+		<br/>
+		<br/>
+		<center>
+		<?php
+			
+				/* discuss behaviour */
+				$sql = "SELECT * FROM discuss";
+				$result = mysql_query($sql);
+											
+				if (!$result) { // add this check.
+					die('Invalid query: ' . mysql_error());
+				}
+				
+				echo "<form name='assignmentform' method='post' action='result.php'>";
+												
+				echo "<table width=800 border=1>";
+				echo "<tr align=center>討論題目清單</tr>";
+				echo "<tr align=center><td>選取</td><td>序號</td><td>討論題目</td><td>說明</td></tr>";
+					
+				while($row = mysql_fetch_array($result)){
+					
+					echo "<tr align=center><td><input name='select' type='radio' value=".$row['d_serial']." checked ></td>";
+					echo "<td>".$row['d_serial']."</td>";
+					echo "<td>".$row['name']."</td>";
+					echo "<td>".$row['content']."</td>";
+					echo "</tr>";
+				}
+				echo "</table>";							
+				echo "<input type='submit' name='button' value='開始分析' />";
+				
+				echo "</form>";
+				
+				
+				
+			
+		?>
+		</center>
+		<br/>
+		<br/>
+	</p>
+</div>
+<div id="FOOTER">	
+	<p>
+		<br/><br/><br/>
+		<h3><center><br/>Author by Che-cheng Lin</center></h3>
+	</p>
+</div>
+</body>
+</html>
+
+
